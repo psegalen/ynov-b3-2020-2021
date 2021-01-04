@@ -1,5 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import { useEffect, useState } from "react";
+import apiHelper from "./apiHelper";
 import "./App.css";
 import NewTask from "./Tasks/NewTask";
 import TasksList from "./Tasks/TasksList";
@@ -14,11 +15,10 @@ const App = () => {
   const [tasks, setTasks] = useState([]);
   const [mode, setMode] = useState(TodoModes.LOADING);
   useEffect(() => {
-    const storageValue = localStorage.getItem("TODO_TASKS");
-    if (storageValue) {
-      setTasks(JSON.parse(storageValue));
-    }
-    setTimeout(() => setMode(TodoModes.LIST), 1000);
+    apiHelper.getTasks().then((apiTasks) => {
+      setTasks(apiTasks);
+      setMode(TodoModes.LIST);
+    });
   }, []);
   useEffect(() => {
     if (mode !== TodoModes.LOADING) {
@@ -29,33 +29,37 @@ const App = () => {
   }, [tasks]);
 
   const toggleIsCompleted = (task) => {
-    const newTasks = tasks.slice();
-    for (let i = 0; i < newTasks.length; i++) {
-      const newTask = newTasks[i];
-      if (newTask.id === task.id) {
-        newTasks[i] = { ...task, isCompleted: !task.isCompleted };
-      }
-    }
-    setTasks(newTasks);
+    apiHelper.toggleTask(task).then((modifiedTask) => {
+      const newTasks = tasks.slice();
+      const taskIndex = tasks.findIndex(
+        (stateTask) => stateTask.id === task.id
+      );
+      newTasks[taskIndex] = modifiedTask;
+      setTasks(newTasks);
+    });
   };
   const deleteTask = (task) => {
-    const taskIndex = tasks.findIndex(
-      (stateTask) => stateTask.id === task.id
-    );
-    const newTasks = tasks
-      .slice(0, taskIndex)
-      .concat(tasks.slice(taskIndex + 1, tasks.length));
-    setTasks(newTasks);
+    apiHelper.deleteTask(task).then((success) => {
+      if (success) {
+        const taskIndex = tasks.findIndex(
+          (stateTask) => stateTask.id === task.id
+        );
+        const newTasks = tasks
+          .slice(0, taskIndex)
+          .concat(tasks.slice(taskIndex + 1, tasks.length));
+        setTasks(newTasks);
+      } else {
+        alert("La suppression est impossible sur le serveur");
+      }
+    });
   };
   const addTask = (title) => {
-    const newTasks = tasks.slice();
-    newTasks.push({
-      id: `${parseInt(Math.random() * 10000)}`,
-      title,
-      isCompleted: false,
+    apiHelper.createTask(title).then((addedTask) => {
+      const newTasks = tasks.slice();
+      newTasks.push(addedTask);
+      setTasks(newTasks);
+      setMode(TodoModes.LIST);
     });
-    setTasks(newTasks);
-    setMode(TodoModes.LIST);
   };
 
   let body =
