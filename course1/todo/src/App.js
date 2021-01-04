@@ -1,8 +1,8 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import { useEffect, useState } from "react";
 import "./App.css";
-import NewTask from "./NewTask";
-import TasksList from "./TasksList";
+import NewTask from "./Tasks/NewTask";
+import TasksList from "./Tasks/TasksList";
 
 const TodoModes = {
   LOADING: "TODO-LOADING",
