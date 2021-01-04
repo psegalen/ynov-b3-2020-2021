@@ -7,7 +7,7 @@ const TasksList = ({ tasks, toggleIsCompleted, deleteTask }) => {
   return (
     <ul className="uk-list uk-list-striped tasks-list">
       {tasks.map((task) => (
-        <li className="task-root">
+        <li className="task-root" key={task.id}>
           <input
             type="checkbox"
             checked={task.isCompleted}
