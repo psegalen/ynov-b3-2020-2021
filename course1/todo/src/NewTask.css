@@ -1,0 +1,18 @@
+.new-task-root {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 20em;
+}
+
+.new-task-title {
+  margin-left: 1em;
+}
+
+.new-task-buttons {
+  margin-top: 1em;
+  display: flex;
+  justify-content: space-evenly;
+  width: 20em;
+}

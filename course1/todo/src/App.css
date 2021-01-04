@@ -3,3 +3,8 @@
   max-width: 70%;
   margin: auto;
 }
+
+.no-task {
+  text-align: center;
+  height: 6em;
+}
