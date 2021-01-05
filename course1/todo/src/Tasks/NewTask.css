@@ -8,10 +8,10 @@
 
 .new-task-title {
   margin-left: 1em;
+  margin-bottom: 1em;
 }
 
 .new-task-buttons {
-  margin-top: 1em;
   display: flex;
   justify-content: space-evenly;
   width: 20em;

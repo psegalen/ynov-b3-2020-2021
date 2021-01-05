@@ -8,17 +8,17 @@ const config = {
 };
 
 const apiHelper = {
-  getTasks: async () => {
+  getTasks: async (listId) => {
     const result = await axios.get(
-      "https://todo.crudful.com/tasks?ordering=createdAt",
+      `https://todo.crudful.com/tasks?ordering=createdAt&listId=${listId}`,
       config
     );
     return result.data.results;
   },
-  createTask: async (title) => {
+  createTask: async (title, listId) => {
     const result = await axios.post(
       "https://todo.crudful.com/tasks",
-      JSON.stringify({ title }),
+      JSON.stringify({ title, listId }),
       config
     );
     return result.data;
@@ -37,6 +37,21 @@ const apiHelper = {
       config
     );
     return result.status === 204;
+  },
+  getLists: async () => {
+    const result = await axios.get(
+      "https://todo.crudful.com/lists?ordering=createdAt",
+      config
+    );
+    return result.data.results;
+  },
+  createList: async (title, color) => {
+    const result = await axios.post(
+      "https://todo.crudful.com/lists",
+      JSON.stringify({ title, color }),
+      config
+    );
+    return result.data;
   },
 };
 
