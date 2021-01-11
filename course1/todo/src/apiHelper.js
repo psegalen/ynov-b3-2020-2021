@@ -9,11 +9,16 @@ const config = {
 
 const apiHelper = {
   getTasks: async (listId) => {
-    const result = await axios.get(
-      `https://todo.crudful.com/tasks?ordering=createdAt&listId=${listId}`,
-      config
-    );
-    return result.data.results;
+    try {
+      const result = await axios.get(
+        `https://todo.crudful.com/tasks?ordering=createdAt&listId=${listId}`,
+        config
+      );
+      return result.data.results;
+    } catch (err) {
+      console.log(err.message);
+      return null;
+    }
   },
   createTask: async (title, listId) => {
     const result = await axios.post(

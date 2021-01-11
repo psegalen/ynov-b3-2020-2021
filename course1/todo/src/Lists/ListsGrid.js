@@ -1,18 +1,18 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
+import { Link } from "react-router-dom";
 import "./ListsGrid.css";
 
-const ListsGrid = ({ lists, showTasks }) => {
+const ListsGrid = ({ lists }) => {
   return (
     <div
-      class="uk-grid-large uk-child-width-1-3@s uk-text-center lists-root"
+      className="uk-grid-large uk-child-width-1-3@s uk-text-center lists-root"
       data-uk-grid
     >
       {lists.map((list) => (
-        <div>
-          <a
-            href="#"
-            class="uk-card uk-card-default uk-card-body"
-            onClick={() => showTasks(list)}
+        <div key={list.id}>
+          <Link
+            className="uk-card uk-card-default uk-card-body"
+            to={`/tasks/${list.id}`}
           >
             <div
               className="list-color"
@@ -26,7 +26,7 @@ const ListsGrid = ({ lists, showTasks }) => {
                   }`
                 : "Vide"}
             </h6>
-          </a>
+          </Link>
         </div>
       ))}
     </div>
