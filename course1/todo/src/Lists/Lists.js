@@ -1,19 +1,23 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import apiHelper from "../apiHelper";
+import { ListsContext } from "../data/ListsContext";
 import { TodoModes } from "../utils";
 import ListsGrid from "./ListsGrid";
 import NewList from "./NewList";
 
 const Lists = () => {
   const [mode, setMode] = useState(TodoModes.LOADING);
-  const [lists, setLists] = useState([]);
+  const { lists, setLists } = useContext(ListsContext);
 
   useEffect(() => {
-    apiHelper.getLists().then((apiLists) => {
-      setLists(apiLists);
-      setMode(TodoModes.LIST);
-    });
+    if (lists.length === 0) {
+      apiHelper.getLists().then((apiLists) => {
+        setLists(apiLists);
+      });
+    }
+    setMode(TodoModes.LIST);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const addList = (title, color) => {

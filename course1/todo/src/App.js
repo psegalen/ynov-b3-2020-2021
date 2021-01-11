@@ -6,18 +6,21 @@ import {
 } from "react-router-dom";
 import Tasks from "./Tasks/Tasks";
 import Lists from "./Lists/Lists";
+import { ListsProvider } from "./data/ListsContext";
 
 const App = () => (
-  <Router>
-    <Switch>
-      <Route path="/tasks/:listId">
-        <Tasks />
-      </Route>
-      <Route path="/">
-        <Lists />
-      </Route>
-    </Switch>
-  </Router>
+  <ListsProvider>
+    <Router>
+      <Switch>
+        <Route path="/tasks/:listId">
+          <Tasks />
+        </Route>
+        <Route path="/">
+          <Lists />
+        </Route>
+      </Switch>
+    </Router>
+  </ListsProvider>
 );
 
 export default App;
