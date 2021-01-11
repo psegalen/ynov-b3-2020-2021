@@ -4,23 +4,30 @@ import {
   Switch,
   Route,
 } from "react-router-dom";
+import { Provider } from "react-redux";
 import Tasks from "./Tasks/Tasks";
 import Lists from "./Lists/Lists";
-import { ListsProvider } from "./data/ListsContext";
+import { store } from "./data/store";
+import { useEffect } from "react";
 
-const App = () => (
-  <ListsProvider>
-    <Router>
-      <Switch>
-        <Route path="/tasks/:listId">
-          <Tasks />
-        </Route>
-        <Route path="/">
-          <Lists />
-        </Route>
-      </Switch>
-    </Router>
-  </ListsProvider>
-);
+const App = () => {
+  useEffect(() => {
+    store.dispatch({ type: "APP_LAUNCH" });
+  }, []);
+  return (
+    <Provider store={store}>
+      <Router>
+        <Switch>
+          <Route path="/tasks/:listId">
+            <Tasks />
+          </Route>
+          <Route path="/">
+            <Lists />
+          </Route>
+        </Switch>
+      </Router>
+    </Provider>
+  );
+};
 
 export default App;

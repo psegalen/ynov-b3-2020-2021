@@ -1,18 +1,33 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import apiHelper from "../apiHelper";
-import { ListsContext } from "../data/ListsContext";
+import { setLists } from "../data/listsActions";
 import { TodoModes } from "../utils";
 import ListsGrid from "./ListsGrid";
 import NewList from "./NewList";
 
 const Lists = () => {
   const [mode, setMode] = useState(TodoModes.LOADING);
-  const { lists, setLists, getLists } = useContext(ListsContext);
+  const dispatch = useDispatch();
+  const lists = useSelector((state) => state.lists.data);
+  const lastFetch = useSelector((state) => state.lists.lastFetchDate);
 
   useEffect(() => {
-    getLists();
-    setMode(TodoModes.LIST);
+    const tenMinutes = 10 * 60 * 1000;
+    if (
+      lists.length === 0 ||
+      lastFetch === null ||
+      lastFetch < new Date().getTime() - tenMinutes
+    ) {
+      apiHelper.getLists().then((apiLists) => {
+        // Dispatch setlists action
+        dispatch(setLists(apiLists));
+        setMode(TodoModes.LIST);
+      });
+    } else {
+      setMode(TodoModes.LIST);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -20,7 +35,7 @@ const Lists = () => {
     apiHelper.createList(title, color).then((addedList) => {
       const newLists = lists.slice();
       newLists.push(addedList);
-      setLists(newLists);
+      dispatch(setLists(newLists));
       setMode(TodoModes.LIST);
     });
   };

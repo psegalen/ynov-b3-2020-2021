@@ -1,8 +1,9 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import apiHelper from "../apiHelper";
-import { ListsContext } from "../data/ListsContext";
+import { setLists } from "../data/listsActions";
 import { TodoModes } from "../utils";
 import NewTask from "./NewTask";
 import TasksList from "./TasksList";
@@ -11,11 +12,23 @@ const Tasks = () => {
   const [tasks, setTasks] = useState([]);
   const [mode, setMode] = useState(TodoModes.LOADING);
   const { listId } = useParams();
-  const { lists, getLists } = useContext(ListsContext);
+  const lists = useSelector((state) => state.lists.data);
   const list = lists.find((l) => l.id === listId);
+  const dispatch = useDispatch();
+  const lastFetch = useSelector((state) => state.lists.lastFetchDate);
 
   useEffect(() => {
-    getLists();
+    const tenMinutes = 10 * 60 * 1000;
+    if (
+      lists.length === 0 ||
+      lastFetch === null ||
+      lastFetch < new Date().getTime() - tenMinutes
+    ) {
+      apiHelper.getLists().then((apiLists) => {
+        // Dispatch setlists action
+        dispatch(setLists(apiLists));
+      });
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
