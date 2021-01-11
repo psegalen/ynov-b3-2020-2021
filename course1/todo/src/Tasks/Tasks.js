@@ -4,7 +4,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import apiHelper from "../apiHelper";
 import { setLists } from "../data/listsActions";
-import { setTasks } from "../data/tasksActions";
+import {
+  setTasks,
+  taskCreated,
+  taskDeleted,
+  taskToggled,
+} from "../data/tasksActions";
 import { TodoModes } from "../utils";
 import NewTask from "./NewTask";
 import TasksList from "./TasksList";
@@ -53,14 +58,13 @@ const Tasks = () => {
 
   const toggleIsCompleted = (task) => {
     apiHelper.toggleTask(task).then((modifiedTask) => {
-      // TODO : dispatch a dedicated action
+      dispatch(taskToggled(modifiedTask, listId));
     });
   };
   const deleteTask = (task) => {
     apiHelper.deleteTask(task).then((success) => {
       if (success) {
-        // TODO : dispatch a dedicated action
-        // TODO : maintain taskCount among lists
+        dispatch(taskDeleted(task, listId));
       } else {
         alert("La suppression est impossible sur le serveur");
       }
@@ -68,8 +72,7 @@ const Tasks = () => {
   };
   const addTask = (title) => {
     apiHelper.createTask(title, listId).then((addedTask) => {
-      // TODO : dispatch a dedicated action
-      // TODO : maintain taskCount among lists
+      dispatch(taskCreated(addedTask, listId));
       setMode(TodoModes.LIST);
     });
   };

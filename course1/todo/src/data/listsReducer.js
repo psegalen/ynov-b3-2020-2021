@@ -1,4 +1,5 @@
 import { listsActions } from "./listsActions";
+import { tasksActions } from "./tasksActions";
 
 const initialState = {
   data: [],
@@ -17,6 +18,20 @@ export const listsReducer = (state = initialState, action) => {
       return {
         ...state,
         data: state.data.concat(action.list),
+      };
+    case tasksActions.TASK_CREATED:
+    case tasksActions.TASK_DELETED:
+      const newData = state.data.slice();
+      for (let i = 0; i < state.data.length; i++) {
+        const list = state.data[i];
+        if (list.id === action.listId) {
+          list.taskCount +=
+            action.type === tasksActions.TASK_DELETED ? -1 : 1;
+        }
+      }
+      return {
+        ...state,
+        data: newData,
       };
     default:
       return state;
