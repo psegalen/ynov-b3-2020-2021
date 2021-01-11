@@ -107,12 +107,12 @@ const Tasks = () => {
           </button>
           <div data-uk-dropdown="pos: bottom-right">
             <ul className="uk-list">
-              <li>
+              <li key="allLists">
                 <Link to="/">Toutes les listes</Link>
               </li>
               <hr />
               {lists.map((list) => (
-                <li>
+                <li key={list.id}>
                   <Link to={`/tasks/${list.id}`}>{list.title}</Link>
                 </li>
               ))}
