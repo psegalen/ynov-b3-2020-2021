@@ -1,12 +1,16 @@
+import { tasksActions } from "./tasksActions";
+
 const initialState = {
-  tasks: [],
-  lastFetchDate: null,
+  data: {},
 };
 
 export const tasksReducer = (state = initialState, action) => {
   switch (action.type) {
-    case "SET_TASKS":
-      return { ...state, tasks: action.tasks };
+    case tasksActions.SET_TASKS:
+      return {
+        ...state,
+        data: { ...state.data, [action.listId]: action.tasks },
+      };
     default:
       return state;
   }

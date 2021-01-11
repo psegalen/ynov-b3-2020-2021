@@ -4,18 +4,20 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import apiHelper from "../apiHelper";
 import { setLists } from "../data/listsActions";
+import { setTasks } from "../data/tasksActions";
 import { TodoModes } from "../utils";
 import NewTask from "./NewTask";
 import TasksList from "./TasksList";
 
 const Tasks = () => {
-  const [tasks, setTasks] = useState([]);
   const [mode, setMode] = useState(TodoModes.LOADING);
   const { listId } = useParams();
   const lists = useSelector((state) => state.lists.data);
   const list = lists.find((l) => l.id === listId);
   const dispatch = useDispatch();
   const lastFetch = useSelector((state) => state.lists.lastFetchDate);
+  const tasks =
+    useSelector((state) => state.tasks.data[listId]) || [];
 
   useEffect(() => {
     const tenMinutes = 10 * 60 * 1000;
@@ -38,7 +40,7 @@ const Tasks = () => {
         // Server returned an error
         setMode(TodoModes.ERROR);
       } else {
-        setTasks(apiTasks);
+        dispatch(setTasks(apiTasks, listId));
         setMode(TodoModes.LIST);
       }
     });
@@ -46,28 +48,18 @@ const Tasks = () => {
 
   useEffect(() => {
     showTasks(listId);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [listId]);
 
   const toggleIsCompleted = (task) => {
     apiHelper.toggleTask(task).then((modifiedTask) => {
-      const newTasks = tasks.slice();
-      const taskIndex = tasks.findIndex(
-        (stateTask) => stateTask.id === task.id
-      );
-      newTasks[taskIndex] = modifiedTask;
-      setTasks(newTasks);
+      // TODO : dispatch a dedicated action
     });
   };
   const deleteTask = (task) => {
     apiHelper.deleteTask(task).then((success) => {
       if (success) {
-        const taskIndex = tasks.findIndex(
-          (stateTask) => stateTask.id === task.id
-        );
-        const newTasks = tasks
-          .slice(0, taskIndex)
-          .concat(tasks.slice(taskIndex + 1, tasks.length));
-        setTasks(newTasks);
+        // TODO : dispatch a dedicated action
         // TODO : maintain taskCount among lists
       } else {
         alert("La suppression est impossible sur le serveur");
@@ -76,11 +68,9 @@ const Tasks = () => {
   };
   const addTask = (title) => {
     apiHelper.createTask(title, listId).then((addedTask) => {
-      const newTasks = tasks.slice();
-      newTasks.push(addedTask);
-      setTasks(newTasks);
-      setMode(TodoModes.LIST);
+      // TODO : dispatch a dedicated action
       // TODO : maintain taskCount among lists
+      setMode(TodoModes.LIST);
     });
   };
 
