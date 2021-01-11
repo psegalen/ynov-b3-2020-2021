@@ -8,14 +8,10 @@ import NewList from "./NewList";
 
 const Lists = () => {
   const [mode, setMode] = useState(TodoModes.LOADING);
-  const { lists, setLists } = useContext(ListsContext);
+  const { lists, setLists, getLists } = useContext(ListsContext);
 
   useEffect(() => {
-    if (lists.length === 0) {
-      apiHelper.getLists().then((apiLists) => {
-        setLists(apiLists);
-      });
-    }
+    getLists();
     setMode(TodoModes.LIST);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

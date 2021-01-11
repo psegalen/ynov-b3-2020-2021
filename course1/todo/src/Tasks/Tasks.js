@@ -1,7 +1,8 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useContext, useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
 import apiHelper from "../apiHelper";
+import { ListsContext } from "../data/ListsContext";
 import { TodoModes } from "../utils";
 import NewTask from "./NewTask";
 import TasksList from "./TasksList";
@@ -10,6 +11,13 @@ const Tasks = () => {
   const [tasks, setTasks] = useState([]);
   const [mode, setMode] = useState(TodoModes.LOADING);
   const { listId } = useParams();
+  const { lists, getLists } = useContext(ListsContext);
+  const list = lists.find((l) => l.id === listId);
+
+  useEffect(() => {
+    getLists();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const showTasks = (listId) => {
     apiHelper.getTasks(listId).then((apiTasks) => {
@@ -88,8 +96,40 @@ const Tasks = () => {
 
   return (
     <div className="App">
-      <h1>Mes choses à faire</h1>
+      <div className="App-header">
+        <h1>Mes choses à faire</h1>
+        <div className="uk-inline">
+          <button
+            className="uk-button uk-button-default"
+            type="button"
+          >
+            Listes
+          </button>
+          <div data-uk-dropdown="pos: bottom-right">
+            <ul className="uk-list">
+              <li>
+                <Link to="/">Toutes les listes</Link>
+              </li>
+              <hr />
+              {lists.map((list) => (
+                <li>
+                  <Link to={`/tasks/${list.id}`}>{list.title}</Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </div>
       <hr />
+      {list ? (
+        <div className="list-name">
+          <h2
+            style={{ color: `#${list.color}`, textAlign: "center" }}
+          >
+            {list.title}
+          </h2>
+        </div>
+      ) : undefined}
       {body}
       {mode === TodoModes.NEW ? undefined : (
         <a href="#" onClick={() => setMode(TodoModes.NEW)}>

@@ -4,6 +4,13 @@
   margin: auto;
 }
 
+.App-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 0 3em;
+}
+
 .no-task {
   text-align: center;
   height: 6em;
