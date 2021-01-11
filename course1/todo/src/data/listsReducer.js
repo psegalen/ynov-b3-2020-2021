@@ -13,6 +13,11 @@ export const listsReducer = (state = initialState, action) => {
         data: action.lists,
         lastFetchDate: new Date().getTime(),
       };
+    case listsActions.ADD_NEW_LIST:
+      return {
+        ...state,
+        data: state.data.concat(action.list),
+      };
     default:
       return state;
   }

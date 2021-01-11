@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import apiHelper from "../apiHelper";
-import { setLists } from "../data/listsActions";
+import { addNewList, setLists } from "../data/listsActions";
 import { TodoModes } from "../utils";
 import ListsGrid from "./ListsGrid";
 import NewList from "./NewList";
@@ -33,9 +33,7 @@ const Lists = () => {
 
   const addList = (title, color) => {
     apiHelper.createList(title, color).then((addedList) => {
-      const newLists = lists.slice();
-      newLists.push(addedList);
-      dispatch(setLists(newLists));
+      dispatch(addNewList(addedList));
       setMode(TodoModes.LIST);
     });
   };
