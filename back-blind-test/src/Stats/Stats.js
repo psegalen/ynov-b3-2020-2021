@@ -1,3 +1,11 @@
+import { useSelector } from "react-redux";
+
 export const Stats = () => {
-  return <div>Stats</div>;
+  const playerName = useSelector((state) => state.user.player.name);
+  return (
+    <div>
+      <div>Bienvenue {playerName} !</div>
+      {/* TODO: add the stats dashboard */}
+    </div>
+  );
 };
