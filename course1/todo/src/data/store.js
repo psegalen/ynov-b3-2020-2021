@@ -1,4 +1,10 @@
-import { combineReducers, createStore } from "redux";
+import {
+  combineReducers,
+  createStore,
+  applyMiddleware,
+  compose,
+} from "redux";
+import ReduxThunk from "redux-thunk";
 import { listsReducer } from "./listsReducer";
 import { tasksReducer } from "./tasksReducer";
 
@@ -7,8 +13,10 @@ const reducers = combineReducers({
   lists: listsReducer,
 });
 
+const composeEnhancer =
+  window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
 export const store = createStore(
   reducers,
-  window.__REDUX_DEVTOOLS_EXTENSION__ &&
-    window.__REDUX_DEVTOOLS_EXTENSION__()
+  composeEnhancer(applyMiddleware(ReduxThunk))
 );

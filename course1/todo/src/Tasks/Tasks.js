@@ -8,8 +8,8 @@ import {
   setTasks,
   taskCreated,
   taskDeleted,
-  taskToggled,
 } from "../data/tasksActions";
+import { toggleTask } from "../data/tasksEffects";
 import { TodoModes } from "../utils";
 import NewTask from "./NewTask";
 import TasksList from "./TasksList";
@@ -56,11 +56,6 @@ const Tasks = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [listId]);
 
-  const toggleIsCompleted = (task) => {
-    apiHelper.toggleTask(task).then((modifiedTask) => {
-      dispatch(taskToggled(modifiedTask, listId));
-    });
-  };
   const deleteTask = (task) => {
     apiHelper.deleteTask(task).then((success) => {
       if (success) {
@@ -85,7 +80,9 @@ const Tasks = () => {
     ) : (
       <TasksList
         tasks={tasks}
-        toggleIsCompleted={toggleIsCompleted}
+        toggleIsCompleted={(task) =>
+          dispatch(toggleTask(task, listId))
+        }
         deleteTask={deleteTask}
       />
     );
