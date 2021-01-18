@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -6,14 +7,13 @@ import ListsGrid from "./ListsGrid";
 import NewList from "./NewList";
 
 const Lists = () => {
-  const [isNew, setIsNew] = useState(false);
   const dispatch = useDispatch();
+  const [isNew, setIsNew] = useState(false);
   const lists = useSelector((state) => state.lists.data);
   const isLoading = useSelector((state) => state.lists.isLoading);
 
   useEffect(() => {
     dispatch(fetchLists());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   let body = undefined;

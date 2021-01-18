@@ -3,6 +3,8 @@ export const tasksActions = {
   TASK_TOGGLED: "TASK_TOGGLED",
   TASK_DELETED: "TASK_DELETED",
   TASK_CREATED: "TASK_CREATED",
+  TASKS_ARE_LOADING: "TASKS_ARE_LOADING",
+  TASKS_ARE_ON_ERROR: "TASKS_ARE_ON_ERROR",
 };
 
 export const setTasks = (tasks, listId) => ({
@@ -27,4 +29,12 @@ export const taskCreated = (task, listId) => ({
   type: tasksActions.TASK_CREATED,
   task,
   listId,
+});
+
+export const tasksAreLoading = () => ({
+  type: tasksActions.TASKS_ARE_LOADING,
+});
+
+export const tasksAreOnError = () => ({
+  type: tasksActions.TASKS_ARE_ON_ERROR,
 });

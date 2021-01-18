@@ -1,89 +1,64 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
-import apiHelper from "../apiHelper";
 import { fetchLists } from "../data/listsEffects";
 import {
-  setTasks,
-  taskCreated,
-  taskDeleted,
-} from "../data/tasksActions";
-import { toggleTask } from "../data/tasksEffects";
-import { TodoModes } from "../utils";
+  addTask,
+  deleteTask,
+  fetchTasks,
+  toggleTask,
+} from "../data/tasksEffects";
 import NewTask from "./NewTask";
 import TasksList from "./TasksList";
 
 const Tasks = () => {
   const dispatch = useDispatch();
-  const [mode, setMode] = useState(TodoModes.LOADING);
+  const [isNew, setIsNew] = useState(false);
   const { listId } = useParams();
   const lists = useSelector((state) => state.lists.data);
-  const list = lists.find((l) => l.id === listId);
   const tasks =
     useSelector((state) => state.tasks.data[listId]) || [];
+  const isLoading = useSelector((state) => state.tasks.isLoading);
+  const isOnError = useSelector((state) => state.tasks.isOnError);
+  const list = lists.find((l) => l.id === listId);
 
   useEffect(() => {
     dispatch(fetchLists());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const showTasks = (listId) => {
-    apiHelper.getTasks(listId).then((apiTasks) => {
-      if (apiTasks === null) {
-        // Server returned an error
-        setMode(TodoModes.ERROR);
-      } else {
-        dispatch(setTasks(apiTasks, listId));
-        setMode(TodoModes.LIST);
-      }
-    });
-  };
-
   useEffect(() => {
-    showTasks(listId);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    dispatch(fetchTasks(listId));
   }, [listId]);
 
-  const deleteTask = (task) => {
-    apiHelper.deleteTask(task).then((success) => {
-      if (success) {
-        dispatch(taskDeleted(task, listId));
-      } else {
-        alert("La suppression est impossible sur le serveur");
-      }
-    });
-  };
-  const addTask = (title) => {
-    apiHelper.createTask(title, listId).then((addedTask) => {
-      dispatch(taskCreated(addedTask, listId));
-      setMode(TodoModes.LIST);
-    });
-  };
-
-  let body =
-    mode === TodoModes.ERROR ? (
-      <div className="no-task">Une erreur est survenue</div>
-    ) : tasks.length === 0 ? (
-      <div className="no-task">Pas de tâche à afficher</div>
-    ) : (
+  let body = undefined;
+  if (isNew) {
+    body = (
+      <NewTask
+        onAddClick={(title) => {
+          dispatch(addTask(title, listId));
+          setIsNew(false);
+        }}
+        onCancelClick={() => setIsNew(false)}
+      />
+    );
+  } else if (isLoading) {
+    body = <div data-uk-spinner className="todo-spinner"></div>;
+  } else if (isOnError) {
+    body = <div className="no-task">Une erreur est survenue</div>;
+  } else if (tasks.length === 0) {
+    body = <div className="no-task">Pas de tâche à afficher</div>;
+  } else {
+    body = (
       <TasksList
         tasks={tasks}
         toggleIsCompleted={(task) =>
           dispatch(toggleTask(task, listId))
         }
-        deleteTask={deleteTask}
+        deleteTask={(task) => dispatch(deleteTask(task, listId))}
       />
     );
-  if (mode === TodoModes.NEW) {
-    body = (
-      <NewTask
-        onAddClick={addTask}
-        onCancelClick={() => setMode(TodoModes.LIST)}
-      />
-    );
-  } else if (mode === TodoModes.LOADING) {
-    body = <div data-uk-spinner className="todo-spinner"></div>;
   }
 
   return (
@@ -123,8 +98,8 @@ const Tasks = () => {
         </div>
       ) : undefined}
       {body}
-      {mode === TodoModes.NEW ? undefined : (
-        <a href="#" onClick={() => setMode(TodoModes.NEW)}>
+      {isNew ? undefined : (
+        <a href="#" onClick={() => setIsNew(true)}>
           + Nouvelle tâche
         </a>
       )}
