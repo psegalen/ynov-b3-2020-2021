@@ -1,0 +1,14 @@
+{
+  "projects": {
+    "default": "ynov-b3-21"
+  },
+  "targets": {
+    "ynov-b3-21": {
+      "hosting": {
+        "BackOffice": [
+          "back-ynov-b3-21"
+        ]
+      }
+    }
+  }
+}
