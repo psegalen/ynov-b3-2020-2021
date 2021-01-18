@@ -4,6 +4,7 @@ import { tasksActions } from "./tasksActions";
 const initialState = {
   data: [],
   lastFetchDate: null,
+  isLoading: false,
 };
 
 export const listsReducer = (state = initialState, action) => {
@@ -13,11 +14,17 @@ export const listsReducer = (state = initialState, action) => {
         ...state,
         data: action.lists,
         lastFetchDate: new Date().getTime(),
+        isLoading: false,
       };
     case listsActions.ADD_NEW_LIST:
       return {
         ...state,
         data: state.data.concat(action.list),
+      };
+    case listsActions.LISTS_ARE_LOADING:
+      return {
+        ...state,
+        isLoading: true,
       };
     case tasksActions.TASK_CREATED:
     case tasksActions.TASK_DELETED:

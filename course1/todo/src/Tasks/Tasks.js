@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import apiHelper from "../apiHelper";
-import { setLists } from "../data/listsActions";
+import { fetchLists } from "../data/listsEffects";
 import {
   setTasks,
   taskCreated,
@@ -15,27 +15,16 @@ import NewTask from "./NewTask";
 import TasksList from "./TasksList";
 
 const Tasks = () => {
+  const dispatch = useDispatch();
   const [mode, setMode] = useState(TodoModes.LOADING);
   const { listId } = useParams();
   const lists = useSelector((state) => state.lists.data);
   const list = lists.find((l) => l.id === listId);
-  const dispatch = useDispatch();
-  const lastFetch = useSelector((state) => state.lists.lastFetchDate);
   const tasks =
     useSelector((state) => state.tasks.data[listId]) || [];
 
   useEffect(() => {
-    const tenMinutes = 10 * 60 * 1000;
-    if (
-      lists.length === 0 ||
-      lastFetch === null ||
-      lastFetch < new Date().getTime() - tenMinutes
-    ) {
-      apiHelper.getLists().then((apiLists) => {
-        // Dispatch setlists action
-        dispatch(setLists(apiLists));
-      });
-    }
+    dispatch(fetchLists());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

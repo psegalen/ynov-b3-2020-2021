@@ -1,59 +1,39 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import apiHelper from "../apiHelper";
-import { addNewList, setLists } from "../data/listsActions";
-import { TodoModes } from "../utils";
+import { addList, fetchLists } from "../data/listsEffects";
 import ListsGrid from "./ListsGrid";
 import NewList from "./NewList";
 
 const Lists = () => {
-  const [mode, setMode] = useState(TodoModes.LOADING);
+  const [isNew, setIsNew] = useState(false);
   const dispatch = useDispatch();
   const lists = useSelector((state) => state.lists.data);
-  const lastFetch = useSelector((state) => state.lists.lastFetchDate);
+  const isLoading = useSelector((state) => state.lists.isLoading);
 
   useEffect(() => {
-    const tenMinutes = 10 * 60 * 1000;
-    if (
-      lists.length === 0 ||
-      lastFetch === null ||
-      lastFetch < new Date().getTime() - tenMinutes
-    ) {
-      apiHelper.getLists().then((apiLists) => {
-        // Dispatch setlists action
-        dispatch(setLists(apiLists));
-        setMode(TodoModes.LIST);
-      });
-    } else {
-      setMode(TodoModes.LIST);
-    }
+    dispatch(fetchLists());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const addList = (title, color) => {
-    apiHelper.createList(title, color).then((addedList) => {
-      dispatch(addNewList(addedList));
-      setMode(TodoModes.LIST);
-    });
-  };
+  let body = undefined;
 
-  let body =
-    lists.length === 0 ? (
-      <div className="no-task">Pas de liste à afficher</div>
-    ) : (
-      <ListsGrid lists={lists} />
-    );
-
-  if (mode === TodoModes.NEW) {
+  if (isNew) {
     body = (
       <NewList
-        onAddClick={addList}
-        onCancelClick={() => setMode(TodoModes.LIST)}
+        onAddClick={(title, color) => {
+          dispatch(addList(title, color));
+          setIsNew(false);
+        }}
+        onCancelClick={() => setIsNew(false)}
       />
     );
-  } else if (mode === TodoModes.LOADING) {
+  } else if (isLoading) {
     body = <div data-uk-spinner className="todo-spinner"></div>;
+  } else if (lists.length === 0) {
+    body = <div className="no-task">Pas de liste à afficher</div>;
+  } else {
+    body = <ListsGrid lists={lists} />;
   }
 
   return (
@@ -61,8 +41,8 @@ const Lists = () => {
       <h1>Mes listes de choses à faire</h1>
       <hr />
       {body}
-      {mode === TodoModes.NEW ? undefined : (
-        <a href="#" onClick={() => setMode(TodoModes.NEW)}>
+      {isNew ? undefined : (
+        <a href="#" onClick={() => setIsNew(true)}>
           + Nouvelle liste
         </a>
       )}
