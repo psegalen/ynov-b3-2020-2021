@@ -1,14 +1,16 @@
+import { Provider } from "react-redux";
 import "./App.css";
+import Navigation from "./Common/Navigation";
+import { store } from "./Common/store";
 
-function App() {
-  return (
+// Providers (store Redux ...)
+
+const App = () => (
+  <Provider store={store}>
     <div className="App">
-      <header className="App-header">
-        <img src="/assets/logo.png" alt="Blind test logo" />
-        <p>Blind test Back-Office</p>
-      </header>
+      <Navigation />
     </div>
-  );
-}
+  </Provider>
+);
 
 export default App;
