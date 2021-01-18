@@ -41,6 +41,7 @@ const Navigation = () => {
   const isAuthenticated = useSelector(
     (state) => state.user.isAuthenticated
   );
+  const player = useSelector((state) => state.user.player);
   const dispatch = useDispatch();
   return (
     <Router>
@@ -57,8 +58,10 @@ const Navigation = () => {
             <Link
               to="/auth"
               onClick={() => dispatch(disconnectUser())}
+              className="sign-out-button"
             >
               Sign Out
+              <img src={player.avatar} alt="User avatar" />
             </Link>
           </div>
         </div>

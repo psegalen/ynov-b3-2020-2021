@@ -27,9 +27,20 @@
   height: 1.5em;
   width: 1.5em;
   margin-right: 0.5em;
+  border-radius: 0.75em;
 }
 
 .header a {
   color: #fff;
   text-decoration: none;
+}
+
+.sign-out-button {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.sign-out-button img {
+  margin-left: 0.5em;
 }
