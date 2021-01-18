@@ -17,3 +17,8 @@ Build a deployable version in a "build" folder.
 ### `yarn run deploy`
 
 Build a deployable version and then deploy it on Firebase hoting.
+
+### Test User
+
+Email: "test@test.fr"
+Password: "testtest"
