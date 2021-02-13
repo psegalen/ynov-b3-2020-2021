@@ -32,7 +32,6 @@ export const getUserPlayer = (uid, onSuccess) => (dispatch) => {
           uid: uid,
           player: result.player,
         });
-        if (onSuccess) onSuccess();
       } else {
         authError(
           dispatch,
@@ -42,6 +41,7 @@ export const getUserPlayer = (uid, onSuccess) => (dispatch) => {
     } else {
       authError(dispatch, result.error);
     }
+    if (onSuccess) onSuccess();
   });
 };
 

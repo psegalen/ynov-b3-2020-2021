@@ -10,6 +10,9 @@ export const Authenticate = () => {
   const [canSignIn, setCanSignIn] = useState(false);
   const dispatch = useDispatch();
   const isLoading = useSelector((state) => state.user.isLoading);
+  const isAuthenticated = useSelector(
+    (state) => state.user.isAuthenticated
+  );
   const history = useHistory();
   const { from } = useLocation().state || { from: { pathname: "/" } };
   const signInSuccess = () => {
@@ -32,6 +35,9 @@ export const Authenticate = () => {
     }
     setCanSignIn(emailIsValid && passwordIsValid);
   }, [email, password]);
+  useEffect(() => {
+    if (isAuthenticated) history.replace("/");
+  }, [isAuthenticated, history]);
   return (
     <div className="auth-root">
       <img src="/assets/logo.png" alt="Blind test logo" />
