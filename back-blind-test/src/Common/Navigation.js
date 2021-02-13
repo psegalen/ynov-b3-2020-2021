@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   Route,
@@ -12,6 +13,7 @@ import { Questions } from "../Questions/Questions";
 import { Stats } from "../Stats/Stats";
 import { Authenticate } from "../User/Authenticate";
 import { disconnectUser } from "../User/userEffects";
+import { launchSequence } from "./appEffects";
 import "./Navigation.css";
 
 const PrivateRoute = ({ children, ...rest }) => {
@@ -42,8 +44,20 @@ const Navigation = () => {
     (state) => state.user.isAuthenticated
   );
   const player = useSelector((state) => state.user.player);
+  const isLoading = useSelector((state) => state.app.isLoading);
   const dispatch = useDispatch();
-  return (
+  useEffect(() => {
+    dispatch(launchSequence());
+  }, [dispatch]);
+  return isLoading ? (
+    <div className="loading-root">
+      <img
+        src="/assets/spinner.svg"
+        alt="Loading animation"
+        style={{ height: "50px" }}
+      />
+    </div>
+  ) : (
     <Router>
       {isAuthenticated ? (
         <div className="header">
@@ -57,7 +71,7 @@ const Navigation = () => {
             <Link to="/admin">Admin</Link>
             <Link
               to="/auth"
-              onClick={() => dispatch(disconnectUser())}
+              onClick={() => disconnectUser()}
               className="sign-out-button"
             >
               Sign Out

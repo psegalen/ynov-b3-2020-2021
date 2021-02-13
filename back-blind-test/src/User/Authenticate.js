@@ -37,7 +37,11 @@ export const Authenticate = () => {
       <img src="/assets/logo.png" alt="Blind test logo" />
       <p>Sign In</p>
       {isLoading ? (
-        <img src="/assets/spinner.svg" alt="Loading animation" />
+        <img
+          src="/assets/spinner.svg"
+          alt="Loading animation"
+          style={{ height: "50px" }}
+        />
       ) : (
         <div className="auth-form">
           <input

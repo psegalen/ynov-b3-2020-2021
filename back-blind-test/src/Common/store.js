@@ -7,8 +7,10 @@ import {
 import ReduxThunk from "redux-thunk";
 import { statsReducer } from "../Stats/statsReducer";
 import { userReducer } from "../User/userReducer";
+import { appReducer } from "./appReducer";
 
 const reducers = combineReducers({
+  app: appReducer,
   user: userReducer,
   stats: statsReducer,
 });

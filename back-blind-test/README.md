@@ -16,7 +16,7 @@ Build a deployable version in a "build" folder.
 
 ### `yarn run deploy`
 
-Build a deployable version and then deploy it on Firebase hoting.
+Build a deployable version and then deploy it on Firebase hosting.
 
 ### Test User
 

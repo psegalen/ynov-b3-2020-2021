@@ -13,7 +13,11 @@ export const Stats = () => {
   let body = undefined;
   if (stats.isLoading) {
     body = (
-      <img src="/assets/spinner_black.svg" alt="Loading animation" />
+      <img
+        src="/assets/spinner_black.svg"
+        alt="Loading animation"
+        style={{ height: "50px" }}
+      />
     );
   } else if (stats.error) {
     body = <p>{stats.error}</p>;

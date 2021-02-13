@@ -21,41 +21,64 @@ const authError = (dispatch, message) => {
   alert(message);
 };
 
+// This thunk gets the player corresponding to the user
+export const getUserPlayer = (uid, onSuccess) => (dispatch) => {
+  // Verify that the user is allowed to access to the Back-Office
+  apiHelper.getPlayer(uid).then((result) => {
+    if (result.status === "ok") {
+      if (result.player.backOffice) {
+        dispatch({
+          type: userActions.IS_AUTHENTICATED,
+          uid: uid,
+          player: result.player,
+        });
+        if (onSuccess) onSuccess();
+      } else {
+        authError(
+          dispatch,
+          "Vous n'avez pas le droit d'utiliser ce Back-Office !\nVous pouvez demander les droits à un administrateur."
+        );
+      }
+    } else {
+      authError(dispatch, result.error);
+    }
+  });
+};
+
+// This thunk will place a listener on Firebase auth state change,
+// automatically getting player is there's an authenticated user,
+// forcing anonymous state if not
+export const listenForAuthChange = (onSuccess) => (dispatch) =>
+  firebase.auth().onAuthStateChanged((user) => {
+    if (user) {
+      dispatch(getUserPlayer(user.uid, onSuccess));
+    } else {
+      dispatch({ type: userActions.IS_ANONYMOUS });
+      onSuccess();
+    }
+  });
+
 export const authenticateUser = (email, password, onSuccess) => (
   dispatch
 ) => {
   dispatch({ type: userActions.IS_LOADING });
   firebase
     .auth()
-    .signInWithEmailAndPassword(email, password)
-    .then((userCredentials) => {
-      console.log(userCredentials.user.uid);
-      // Verify that the user is allowed to access to the Back-Office
-      apiHelper.getPlayer(userCredentials.user.uid).then((result) => {
-        if (result.status === "ok") {
-          if (result.player.backOffice) {
-            dispatch({
-              type: userActions.IS_AUTHENTICATED,
-              uid: userCredentials.user.uid,
-              player: result.player,
-            });
-            onSuccess();
-          } else {
-            authError(
-              dispatch,
-              "Vous n'avez pas le droit d'utiliser ce Back-Office !\nVous pouvez demander les droits à un administrateur."
-            );
-          }
-        } else {
-          authError(dispatch, result.error);
-        }
-      });
-    })
-    .catch((err) => {
-      authError(dispatch, err.message);
-    });
+    .setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+    .then(() =>
+      firebase
+        .auth()
+        .signInWithEmailAndPassword(email, password)
+        .then((userCredentials) => {
+          dispatch(
+            getUserPlayer(userCredentials.user.uid, onSuccess)
+          );
+        })
+        .catch((err) => {
+          authError(dispatch, err.message);
+        })
+    );
 };
 
-export const disconnectUser = () => (dispatch) => {
-  dispatch({ type: userActions.IS_ANONYMOUS });
-};
+// This is not a thunk, it just signs the user out, the listener will then set the state
+export const disconnectUser = () => firebase.auth().signOut();
