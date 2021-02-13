@@ -1,4 +1,7 @@
 .App {
+  height: 100%;
   text-align: center;
   font-size: calc(10px + 1.5vmin);
+  display: flex;
+  flex-direction: column;
 }

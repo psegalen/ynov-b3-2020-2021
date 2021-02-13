@@ -1,7 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { StatDisplay } from "../components/StatDisplay";
 import { fetchStats } from "./statsEffects";
+import "./Stats.css";
 
 export const Stats = () => {
   const playerName = useSelector((state) => state.user.player.name);
@@ -23,16 +25,28 @@ export const Stats = () => {
     body = <p>{stats.error}</p>;
   } else {
     body = (
-      <div>
-        <p>Nombre de joueurs : {stats.nbPlayers}</p>
-        <p>Nombre de parties jouées : {stats.nbGames}</p>
-        <p>Nombre de questions : {stats.nbQuestions}</p>
+      <div className="stats-displays">
+        <StatDisplay
+          number={stats.nbPlayers}
+          title="Joueurs"
+          color="green"
+        />
+        <StatDisplay
+          number={stats.nbGames}
+          title="Parties jouées"
+          color="blue"
+        />
+        <StatDisplay
+          number={stats.nbQuestions}
+          title="Questions"
+          color="red"
+        />
       </div>
     );
   }
   return (
-    <div>
-      <div>Bienvenue {playerName} !</div>
+    <div className="stats-root">
+      <h3 className="stats-title">Bienvenue {playerName} !</h3>
       {body}
     </div>
   );

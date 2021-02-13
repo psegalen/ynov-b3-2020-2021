@@ -1,0 +1,18 @@
+.stats-root {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.stats-title {
+  margin-bottom: 32px;
+}
+
+.stats-displays {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+}

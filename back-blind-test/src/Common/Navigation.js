@@ -66,7 +66,7 @@ const Navigation = () => {
             Blind-Test Back-Office
           </Link>
           <div className="app-links">
-            <Link to="/games">Games</Link>
+            <Link to="/games">Parties</Link>
             <Link to="/questions">Questions</Link>
             <Link to="/admin">Admin</Link>
             <Link
