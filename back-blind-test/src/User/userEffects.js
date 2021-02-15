@@ -52,6 +52,10 @@ export const listenForAuthChange = (onSuccess) => (dispatch) =>
   firebase.auth().onAuthStateChanged((user) => {
     if (user) {
       dispatch(getUserPlayer(user.uid, onSuccess));
+      firebase
+        .auth()
+        .currentUser.getIdToken()
+        .then((t) => console.log(t));
     } else {
       dispatch({ type: userActions.IS_ANONYMOUS });
       onSuccess();

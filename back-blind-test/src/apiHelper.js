@@ -14,6 +14,10 @@ const apiHelper = {
     fetch(`${apiRoot}game`)
       .then((result) => result.json())
       .catch(handleError),
+  getPlayers: () =>
+    fetch(`${apiRoot}players`)
+      .then((result) => result.json())
+      .catch(handleError),
 };
 
 export default apiHelper;

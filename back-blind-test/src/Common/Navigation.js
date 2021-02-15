@@ -7,8 +7,7 @@ import {
   Switch,
   Link,
 } from "react-router-dom";
-import { Admin } from "../Admin/Admin";
-import { Games } from "../Games/Games";
+import { Players } from "../Players/Players";
 import { Questions } from "../Questions/Questions";
 import { Stats } from "../Stats/Stats";
 import { Authenticate } from "../User/Authenticate";
@@ -66,9 +65,8 @@ const Navigation = () => {
             Blind-Test Back-Office
           </Link>
           <div className="app-links">
-            <Link to="/games">Parties</Link>
             <Link to="/questions">Questions</Link>
-            <Link to="/admin">Admin</Link>
+            <Link to="/players">Joueurs</Link>
             <Link
               to="/auth"
               onClick={() => disconnectUser()}
@@ -87,11 +85,8 @@ const Navigation = () => {
         <PrivateRoute path="/questions">
           <Questions />
         </PrivateRoute>
-        <PrivateRoute path="/admin">
-          <Admin />
-        </PrivateRoute>
-        <PrivateRoute path="/games">
-          <Games />
+        <PrivateRoute path="/players">
+          <Players />
         </PrivateRoute>
         <PrivateRoute path="/">
           <Stats />
