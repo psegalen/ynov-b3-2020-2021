@@ -2,6 +2,48 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: stretch;
   justify-content: center;
+}
+
+.players-container {
+  display: flex;
+  flex-direction: row;
+  flex: 1;
+}
+
+.players-list {
+  width: 350px;
+}
+
+.player-details {
+  flex: 1;
+  border: 1px solid #999;
+  margin: 0 16px 16px 0;
+  border-radius: 16px;
+  box-shadow: 2px 2px 2px #888;
+  padding: 16px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+.player-card {
+  padding: 16px;
+  margin: 0 16px 16px 16px;
+  border: 1px solid #999;
+  border-radius: 16px;
+  box-shadow: 2px 2px 2px #888;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.player-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 24px;
+  margin: 0 16px;
+  background-size: cover;
+  background-position: center;
 }

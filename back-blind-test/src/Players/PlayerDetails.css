@@ -1,0 +1,15 @@
+.player-header {
+  display: flex;
+  align-items: center;
+}
+
+.player-header .player-avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 32px;
+}
+
+.player-header .player-name {
+  flex: 1;
+  text-align: left;
+}

@@ -85,6 +85,9 @@ const Navigation = () => {
         <PrivateRoute path="/questions">
           <Questions />
         </PrivateRoute>
+        <PrivateRoute path="/players/:playerId">
+          <Players />
+        </PrivateRoute>
         <PrivateRoute path="/players">
           <Players />
         </PrivateRoute>

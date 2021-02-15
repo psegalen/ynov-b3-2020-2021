@@ -18,3 +18,23 @@ export const fetchPlayers = () => (dispatch) => {
     }
   });
 };
+
+export const givePlayerRights = (playerId, backOffice) => (
+  dispatch
+) => {
+  apiHelper.giveAdminRights(playerId, backOffice).then((result) => {
+    if (result.status === "ok") {
+      dispatch({
+        type: playersActions.SET_RIGHTS,
+        playerId,
+        backOffice,
+      });
+      alert("Les droits ont bien été changés !");
+    } else {
+      dispatch({ type: playersActions.IS_READY });
+      alert(
+        `Erreur lors de la modification des droits : ${result.error}`
+      );
+    }
+  });
+};

@@ -10,7 +10,9 @@ export const Stats = () => {
   const stats = useSelector((state) => state.stats);
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(fetchStats());
+    if (stats.nbPlayers === "") {
+      dispatch(fetchStats());
+    }
   }, []);
   let body = undefined;
   if (stats.isLoading) {
