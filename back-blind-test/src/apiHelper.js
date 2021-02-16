@@ -33,6 +33,20 @@ const apiHelper = {
           },
         }).then((result) => result.json())
       ),
+  createQuestion: (question) =>
+    firebase
+      .auth()
+      .currentUser.getIdToken()
+      .then((token) =>
+        fetch(`${apiRoot}questions`, {
+          method: "POST",
+          body: JSON.stringify(question),
+          headers: {
+            BlindTestToken: token,
+            "Content-Type": "application/json",
+          },
+        }).then((result) => result.json())
+      ),
 };
 
 export default apiHelper;

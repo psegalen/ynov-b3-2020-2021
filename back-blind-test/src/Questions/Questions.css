@@ -8,16 +8,32 @@
   flex: 1;
 }
 
-.question-details {
+.question-details,
+.question-search {
   border: 1px solid #999;
   margin: 16px;
   border-radius: 16px;
   box-shadow: 2px 2px 2px #888;
   padding: 16px;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   width: 450px;
   text-align: center;
+}
+
+.question-search {
+  justify-content: space-evenly;
+}
+
+.question-album {
+  border-radius: 28px;
+  margin-right: 32px;
+}
+
+.question-song-info {
+  text-align: left;
+  font-size: 0.8em;
+  flex: 1;
 }
