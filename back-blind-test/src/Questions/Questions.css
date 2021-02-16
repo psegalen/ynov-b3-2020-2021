@@ -1,0 +1,23 @@
+.questions-root {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.question-wizard-step1 {
+  flex: 1;
+}
+
+.question-details {
+  border: 1px solid #999;
+  margin: 16px;
+  border-radius: 16px;
+  box-shadow: 2px 2px 2px #888;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 450px;
+  text-align: center;
+}
