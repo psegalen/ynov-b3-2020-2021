@@ -1,0 +1,30 @@
+.page-root {
+  padding: 32px;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.home-root {
+  padding: 32px;
+  height: 100%;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.home-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+}
+
+.home-nbgames {
+  margin: 32px 0 !important;
+}
+
+.play-button {
+  height: 4em;
+  width: 10em;
+}

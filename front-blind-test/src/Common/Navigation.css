@@ -1,0 +1,55 @@
+.header {
+  background-color: #325088 !important;
+  height: 3em;
+  display: flex;
+  flex-direction: row !important;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1em;
+  box-sizing: border-box;
+  color: #fff;
+}
+
+.app-name {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex: 1;
+}
+
+.app-links {
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+}
+
+.header img {
+  height: 1.5em;
+  width: 1.5em;
+  margin-right: 0.5em;
+  border-radius: 0.75em;
+}
+
+.header a {
+  color: #fff;
+  text-decoration: none;
+}
+
+.sign-out-button {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.sign-out-button img {
+  margin-left: 0.5em;
+}
+
+.loading-root {
+  background-color: #325088;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}

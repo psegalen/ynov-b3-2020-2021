@@ -1,0 +1,24 @@
+.auth-root {
+  background-color: #325088;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  padding: 32px;
+}
+
+.auth-form-control {
+  margin-top: 32px !important;
+}
+
+.ok-button {
+  height: 4em;
+}

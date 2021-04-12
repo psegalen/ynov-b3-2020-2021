@@ -1,0 +1,48 @@
+.page-root {
+  padding: 32px;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.game-root {
+  padding: 32px;
+  height: 100%;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.game-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+}
+
+.new-game-button {
+  margin-top: 32px !important;
+  height: 4em;
+  width: 20em;
+}
+
+.answers-row {
+  margin-top: 32px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.answer-root {
+  padding: 32px;
+  flex: 1;
+  min-width: 15em;
+  min-height: 5em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.answer-root.clickable {
+  cursor: pointer;
+}
